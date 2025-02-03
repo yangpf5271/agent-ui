@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useParams } from 'next/navigation'
-import { useQueryState } from 'nuqs'
+// import { useQueryState } from 'nuqs'
 // import { toast } from 'sonner'
 
 import { APIRoutes } from '@/api/routes'
@@ -23,8 +23,8 @@ const useAIChatStreamHandler = () => {
   // const setHistoryData = usePlaygroundStore((s) => s.setHistoryData)
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const { addMessage } = useChatActions()
-  const [selectedAgent] = useQueryState('agent')
-  const [selectedEndpoint] = useQueryState('endpoint')
+  const selectedAgent = "simple-agent"
+  const selectedEndpoint = "http://localhost:7777"
   // const [sessionId, setSessionId] = useQueryState('session')
   const { streamResponse } = useAIResponseStream()
   // const setStreamingError = usePlaygroundStore((s) => s.setStreamingError)
@@ -86,7 +86,7 @@ const useAIChatStreamHandler = () => {
         // Build URL with the selected agent's parameter
         const playgroundRunUrl = APIRoutes.AgentRun(endpointUrl).replace(
           '{agent_id}',
-          selectedAgent!
+          selectedAgent
         )
 
         // Append required field

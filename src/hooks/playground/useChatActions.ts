@@ -1,35 +1,35 @@
 import { useCallback } from 'react'
 
-import { useParams } from 'next/navigation'
-import { useQueryState } from 'nuqs'
+// import { useParams } from 'next/navigation'
+// import { useQueryState } from 'nuqs'
 // import { toast } from 'react-toastify'
 
 // import { deletePlaygroundSessionAPI } from '@/api/playground'
 import { usePlaygroundStore } from '@/stores/PlaygroundStore'
 // import { type DefaultPageParams } from '@/types/globals'
 import { type PlaygroundChatMessage } from '@/types/playground'
-import { constructEndpointUrl } from '@/utils/playgroundUtils'
+// import { constructEndpointUrl } from '@/utils/playgroundUtils'
 // import useUser from '../useUser'
 
 const useChatActions = () => {
   // const params = useParams<DefaultPageParams>()
-  const [sessionId, setSessionId] = useQueryState('session')
-  const [selectedAgent] = useQueryState('agent')
-  const [selectedEndpoint] = useQueryState('endpoint')
+  // const [sessionId, setSessionId] = useQueryState('session')
+  // const [selectedAgent] = useQueryState('agent')
+  // const [selectedEndpoint] = useQueryState('endpoint')
   const setMessages = usePlaygroundStore((state) => state.setMessages)
-  const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
-  const historyData = usePlaygroundStore((state) => state.historyData)
+  // const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
+  // const historyData = usePlaygroundStore((state) => state.historyData)
   // const username = useUser()?.username
 
   // const teamURL = params.account !== username ? params.account : undefined
   // const userId = teamURL ? `${username}__${teamURL}` : username
 
-  const clearChat = useCallback(() => {
-    setSessionId(null)
-    setMessages([])
+  // const clearChat = useCallback(() => {
+  //   setSessionId(null)
+  //   setMessages([])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const addMessage = useCallback(
     (message: PlaygroundChatMessage) => {
@@ -77,7 +77,7 @@ const useChatActions = () => {
   // )
 
   return {
-    clearChat,
+    // clearChat,
     addMessage,
     // deleteSession
   }
