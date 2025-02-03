@@ -48,12 +48,12 @@ export const AgentMessage = ({ message }: MessageProps) => {
 }
 
 export const UserMessage = memo(({ message }: MessageProps) => {
-  const username = "user message"
+  const username = "U"
 
   return (
     <div className="flex flex-row items-start gap-4 pt-4 text-start max-md:break-words">
-      <div className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-sm bg-secondary text-[10px]">
-        <div className="text-primary uppercase">
+      <div className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-sm bg-orange-500 text-[10px]">
+        <div className="text-white uppercase">
           {username}
         </div>
       </div>
