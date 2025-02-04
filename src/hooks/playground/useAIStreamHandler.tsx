@@ -22,6 +22,7 @@ const useAIChatStreamHandler = () => {
   // const username = useUser()?.username
   // const setHistoryData = usePlaygroundStore((s) => s.setHistoryData)
   const setMessages = usePlaygroundStore((state) => state.setMessages)
+  const setStreamingError = usePlaygroundStore((state) => state.setStreamingError)
   const { addMessage } = useChatActions()
   const selectedAgent = "simple-agent"
   const selectedEndpoint = "http://localhost:7777"
@@ -44,14 +45,14 @@ const useAIChatStreamHandler = () => {
         formData.append('message', input)
       }
 
-      // Remove the last two messages if they were an errored pair (logic available for later use)
+      // Remove the last two messages only if they were an errored pair
       setMessages((prevMessages) => {
         if (prevMessages.length >= 2) {
           const lastMessage = prevMessages[prevMessages.length - 1]
           const secondLastMessage = prevMessages[prevMessages.length - 2]
           if (
             lastMessage.role === 'agent' &&
-            // lastMessage.streamingError && // error handling logic commented out
+            lastMessage.streamingError === true && // only remove if an error occurred
             secondLastMessage.role === 'user'
           ) {
             return prevMessages.slice(0, -2)
@@ -152,11 +153,12 @@ const useAIChatStreamHandler = () => {
               const newMessages = [...prevMessages]
               const lastMessage = newMessages[newMessages.length - 1]
               if (lastMessage && lastMessage.role === 'agent') {
-                // Uncomment when adding error handling:
-                // lastMessage.streamingError = true
+                lastMessage.streamingError = true
               }
               return newMessages
             })
+            // Update global state to indicate a streaming error occurred
+            setStreamingError(true)
             // Use console.error instead of toast until notification handling is added
             console.error(
               `Error in streamResponse: ${
@@ -165,9 +167,8 @@ const useAIChatStreamHandler = () => {
             )
           },
           onComplete: () => {
-            // Complete callback logic can be added later.
-            // For now, session or streaming state update code is commented out.
-            // setStreamingError(false)
+            // Reset the global streaming error flag on successful completion
+            setStreamingError(false)
             // if (newSessionId && newSessionId !== sessionId) {
             //   const placeHolderSessionData = {
             //     session_id: newSessionId,
@@ -199,7 +200,8 @@ const useAIChatStreamHandler = () => {
       // sessionId, // removed until needed
       selectedEndpoint,
       streamResponse,
-      selectedAgent
+      selectedAgent,
+      setStreamingError
       // userId, isMonitoring, setSessionId, setStreamingError, setHistoryData are removed/commented
     ]
   )
