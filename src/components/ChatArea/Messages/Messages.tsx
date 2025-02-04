@@ -6,7 +6,7 @@ import MarkdownRenderer from '@/components/ui/typography/MarkdownRenderer'
 import { usePlaygroundStore } from '@/stores/PlaygroundStore'
 
 import type { PlaygroundChatMessage } from '@/types/playground'
-// import AgentThinkingLoader from '../AgentThinkingLoader'
+import AgentThinkingLoader from '../AgentThinkingLoader'
 
 interface MessageProps {
   message: PlaygroundChatMessage
@@ -32,7 +32,7 @@ export const AgentMessage = ({ message }: MessageProps) => {
   } else {
     messageContent = (
       <div className="mt-2 flex items-start">
-        {/* <AgentThinkingLoader /> */}
+        <AgentThinkingLoader />
       </div>
     )
   }
