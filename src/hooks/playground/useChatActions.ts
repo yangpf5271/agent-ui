@@ -24,12 +24,10 @@ const useChatActions = () => {
   // const teamURL = params.account !== username ? params.account : undefined
   // const userId = teamURL ? `${username}__${teamURL}` : username
 
-  // const clearChat = useCallback(() => {
-  //   setSessionId(null)
-  //   setMessages([])
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  const clearChat = useCallback(() => {
+  setMessages([])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const addMessage = useCallback(
     (message: PlaygroundChatMessage) => {
@@ -77,7 +75,7 @@ const useChatActions = () => {
   // )
 
   return {
-    // clearChat,
+    clearChat,
     addMessage,
     // deleteSession
   }
