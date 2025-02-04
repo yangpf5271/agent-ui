@@ -31,7 +31,7 @@ export const AgentMessage = ({ message }: MessageProps) => {
     );
   } else {
     messageContent = (
-      <div className="flex items-start text-sm">Thinking...</div>
+      <div className="flex items-start text-md">Thinking...</div>
     );
   }
 

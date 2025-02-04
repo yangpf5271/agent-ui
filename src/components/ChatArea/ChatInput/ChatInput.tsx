@@ -66,7 +66,7 @@ const ChatInput = () => {
             handleSubmit();
           }
         }}
-        className="w-full border border-border/50 pr-10 text-sm focus:border-border"
+        className="w-full border border-border/50 pr-10 text-sm focus:border-border bg-primary"
         // disabled={selectedAgent === null || agents.length === 0}
         ref={chatInputRef}
       />
