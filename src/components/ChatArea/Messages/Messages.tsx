@@ -52,7 +52,7 @@ export const UserMessage = memo(({ message }: MessageProps) => {
 
   return (
     <div className="flex flex-row items-start gap-4 pt-4 text-start max-md:break-words">
-      <div className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-sm bg-orange-500 text-[10px]">
+      <div className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-sm bg-brand text-[10px]">
         <div className="text-white uppercase">
           {username}
         </div>
