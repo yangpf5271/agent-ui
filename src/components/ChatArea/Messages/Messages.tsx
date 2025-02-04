@@ -30,7 +30,9 @@ export const AgentMessage = ({ message }: MessageProps) => {
       </p>
     );
   } else {
-    messageContent = <div className="mt-2 flex items-start">Thinking...</div>;
+    messageContent = (
+      <div className="flex items-start text-sm">Thinking...</div>
+    );
   }
 
   return (
