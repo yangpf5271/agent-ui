@@ -21,7 +21,7 @@ const CollapsibleSidebar = () => {
       <div className="mb-4">
         <Button
           onClick={clearChat}
-          className={`w-full bg-brand/80 ${isSidebarCollapsed ? "justify-center" : "justify-start"}`}
+          className={`w-full bg-brand hover:bg-brand/80 ${isSidebarCollapsed ? "justify-center" : "justify-start"}`}
         >
           <PlusIcon />
           {!isSidebarCollapsed && <span className="ml-2">New Chat</span>}
