@@ -6,7 +6,7 @@ import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
 import type { PlaygroundChatMessage } from "@/types/playground";
-import AgentThinkingLoader from "../AgentThinkingLoader";
+import { Sparkles } from "lucide-react";
 
 interface MessageProps {
   message: PlaygroundChatMessage;
@@ -30,17 +30,15 @@ export const AgentMessage = ({ message }: MessageProps) => {
       </p>
     );
   } else {
-    messageContent = (
-      <div className="mt-2 flex items-start">
-        <AgentThinkingLoader />
-      </div>
-    );
+    messageContent = <div className="mt-2 flex items-start">Thinking...</div>;
   }
 
   return (
     <div className="flex flex-row items-start gap-4">
       <div className="shrink-0">
-        <div>AI</div>
+        <div className="bg-brand text-secondary rounded-full p-1">
+          <Sparkles size={16} />
+        </div>
       </div>
       {messageContent}
     </div>
