@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-primary text-secondary">
       <Navbar />
       <main className="relative flex flex-col flex-grow">
         <ChatArea />
