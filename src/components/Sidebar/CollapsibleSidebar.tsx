@@ -12,8 +12,6 @@ const CollapsibleSidebar = () => {
 
   return (
     <div
-      // The sidebar container with a dynamic width: w-64 when expanded, w-16 when collapsed.
-      // Adjusted padding so that when collapsed, the inner content has more room.
       className={`flex flex-col h-screen bg-gray-100 transition-all duration-300 ${
         isSidebarCollapsed ? "w-16 p-2" : "w-64 p-2"
       }`}
@@ -37,9 +35,9 @@ const CollapsibleSidebar = () => {
           className="w-full p-1"
         >
           {isSidebarCollapsed ? (
-            <ChevronRightIcon className="w-4 h-4" />
+            <ChevronRightIcon className="size-4" />
           ) : (
-            <ChevronLeftIcon className="w-4 h-4" />
+            <ChevronLeftIcon className="size-4" />
           )}
         </Button>
       </div>

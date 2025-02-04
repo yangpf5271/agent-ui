@@ -59,7 +59,7 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   setEndpoints: (endpoints) => set(() => ({ endpoints })),
   isStreaming: false,
   setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
-  isSidebarCollapsed: false,
+  isSidebarCollapsed: true,
   setIsSidebarCollapsed: (isSidebarCollapsed) =>
     set(() => ({ isSidebarCollapsed })),
   historyLoading: false,
