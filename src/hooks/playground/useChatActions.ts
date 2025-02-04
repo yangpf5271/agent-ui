@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 
 // import { useParams } from 'next/navigation'
 // import { useQueryState } from 'nuqs'
@@ -38,8 +39,14 @@ const useChatActions = () => {
   )
 
   const getAgents = useCallback(async () => {
-    const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
-    return agents;
+    try {
+      const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
+      return agents;
+    } catch (error) {
+      toast.error("Error fetching agents");
+      console.error("Error in getAgents:", error);
+      return [];
+    }
   }, [selectedEndpoint])
 
   // const deleteSession = useCallback(

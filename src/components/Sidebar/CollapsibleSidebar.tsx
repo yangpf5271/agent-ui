@@ -1,10 +1,12 @@
 "use client"
 
+import React from "react"
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Icon from "../ui/icon";
 import useChatActions from "@/hooks/playground/useChatActions";
+import { AgentSelector } from "@/components/AgentSelector"
 
 const CollapsibleSidebar = () => {
   const { isSidebarCollapsed, setIsSidebarCollapsed } = usePlaygroundStore();
@@ -16,6 +18,7 @@ const CollapsibleSidebar = () => {
         isSidebarCollapsed ? "w-16 p-2" : "w-64 p-2"
       }`}
     >
+
       <div className="mb-4">
         <Button
           onClick={clearChat}
@@ -24,6 +27,10 @@ const CollapsibleSidebar = () => {
           <PlusIcon />
           {!isSidebarCollapsed && <span className="ml-2">New Chat</span>}
         </Button>
+      </div>
+
+      <div className={`${isSidebarCollapsed ? "hidden" : " my-2"}`}>
+        <AgentSelector />
       </div>
 
       <div className="flex-grow">

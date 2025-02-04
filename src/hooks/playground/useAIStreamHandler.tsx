@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 
-import { useParams } from 'next/navigation'
 // import { useQueryState } from 'nuqs'
 // import { toast } from 'sonner'
 
@@ -24,7 +23,7 @@ const useAIChatStreamHandler = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const setStreamingError = usePlaygroundStore((state) => state.setStreamingError)
   const { addMessage } = useChatActions()
-  const selectedAgent = "simple-agent"
+  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent)
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
   // const [sessionId, setSessionId] = useQueryState('session')
   const { streamResponse } = useAIResponseStream()
@@ -182,12 +181,7 @@ const useAIChatStreamHandler = () => {
             // }
           }
         })
-      } catch (error) {
-        console.error(
-          `Error in handleStreamResponse: ${
-            error instanceof Error ? error.message : String(error)
-          }`
-        )
+      } catch {
       } finally {
         // Uncomment when adding streaming state updates
         // setIsStreaming(false)
