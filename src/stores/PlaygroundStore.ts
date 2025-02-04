@@ -48,6 +48,8 @@ interface PlaygroundStore {
   setIsMonitoring: (isMonitoring: boolean) => void
 
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>
+  selectedEndpoint: string
+  setSelectedEndpoint: (selectedEndpoint: string) => void
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
@@ -89,5 +91,7 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   isMonitoring: true,
   setIsMonitoring: (isMonitoring) => set(() => ({ isMonitoring })),
 
-  chatInputRef: { current: null }
+  chatInputRef: { current: null },
+  selectedEndpoint: "http://localhost:7777",
+  setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
 }))

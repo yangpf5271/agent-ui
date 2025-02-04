@@ -69,4 +69,24 @@ interface ModelMessage {
     title: string
     created_at: number
   }
+
+  export interface Model {
+    name: string
+    model: string
+    provider: string
+  }
   
+  export interface Agent {
+    agent_id: string
+    name: string
+    description: string
+    created_at: string
+    updated_at: string
+    model: Model
+    enable_rag: boolean
+    // tools: Tool[]
+    storage: Storage
+    // knowledge: Knowledge
+    memory: string | null
+    instructions: string[] | null
+  }

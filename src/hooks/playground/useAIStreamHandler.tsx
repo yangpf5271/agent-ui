@@ -25,7 +25,7 @@ const useAIChatStreamHandler = () => {
   const setStreamingError = usePlaygroundStore((state) => state.setStreamingError)
   const { addMessage } = useChatActions()
   const selectedAgent = "simple-agent"
-  const selectedEndpoint = "http://localhost:7777"
+  const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
   // const [sessionId, setSessionId] = useQueryState('session')
   const { streamResponse } = useAIResponseStream()
   // const setStreamingError = usePlaygroundStore((s) => s.setStreamingError)

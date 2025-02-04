@@ -8,6 +8,7 @@ import { useCallback } from 'react'
 import { usePlaygroundStore } from '@/stores/PlaygroundStore'
 // import { type DefaultPageParams } from '@/types/globals'
 import { type PlaygroundChatMessage } from '@/types/playground'
+import { getPlaygroundAgentsAPI } from '@/api/playground'
 // import { constructEndpointUrl } from '@/utils/playgroundUtils'
 // import useUser from '../useUser'
 
@@ -15,7 +16,7 @@ const useChatActions = () => {
   // const params = useParams<DefaultPageParams>()
   // const [sessionId, setSessionId] = useQueryState('session')
   // const [selectedAgent] = useQueryState('agent')
-  // const [selectedEndpoint] = useQueryState('endpoint')
+  const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint);
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   // const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
   // const historyData = usePlaygroundStore((state) => state.historyData)
@@ -35,6 +36,11 @@ const useChatActions = () => {
     },
     [setMessages]
   )
+
+  const getAgents = useCallback(async () => {
+    const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
+    return agents;
+  }, [selectedEndpoint])
 
   // const deleteSession = useCallback(
   //   async (sessionIdToDelete: string) => {
@@ -77,6 +83,7 @@ const useChatActions = () => {
   return {
     clearChat,
     addMessage,
+    getAgents,
     // deleteSession
   }
 }
