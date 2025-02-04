@@ -49,7 +49,7 @@ export function AgentSelector() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-60 justify-between"
         >
           {selectedAgent
             ? agents.find((agent) => agent.value === selectedAgent)?.label ||
@@ -58,7 +58,7 @@ export function AgentSelector() {
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent className="w-60 p-0">
         <Command>
           <CommandInput placeholder="Search agent..." />
           <CommandList>
