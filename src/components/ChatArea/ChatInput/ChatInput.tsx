@@ -16,7 +16,7 @@ const ChatInput = () => {
 
   // const { data: agents = [] } = useAgentsQuery(selectedEndpoint)
   const { handleStreamResponse } = useAIChatStreamHandler();
-  // const isStreaming = usePlaygroundStore((state) => state.isStreaming)
+  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent)
   const setStreamingError = usePlaygroundStore(
     (state) => state.setStreamingError
   );
@@ -49,11 +49,7 @@ const ChatInput = () => {
     }
   };
 
-  // const isDisabled =
-  //   selectedAgent === null ||
-  //   // agents.length === 0 ||
-  //   !inputMessage.trim() ||
-  //   isStreaming
+  const isDisabled = selectedAgent === ""
 
   return (
     <div className="relative mx-auto flex w-full max-w-2xl justify-center gap-x-2 mb-1">
@@ -68,12 +64,12 @@ const ChatInput = () => {
           }
         }}
         className="w-full border border-border/50 pr-10 text-sm focus:border-border bg-primary"
-        // disabled={selectedAgent === null || agents.length === 0}
+        disabled={isDisabled}
         ref={chatInputRef}
       />
       <Button
         onClick={handleSubmit}
-        // disabled={isDisabled}
+        disabled={isDisabled}
         variant="link"
         className="absolute bottom-[-12px] right-1.5 -translate-y-1/2 text-secondary"
       >
