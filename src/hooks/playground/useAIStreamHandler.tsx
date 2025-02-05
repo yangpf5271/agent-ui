@@ -10,6 +10,7 @@ import { usePlaygroundStore } from '@/stores/PlaygroundStore'
 import { RunEvent, type RunResponse } from '@/types/playground'
 import { constructEndpointUrl } from '@/utils/playgroundUtils'
 import useAIResponseStream from '../streaming/useAIResponseStream'
+import { ToolCall } from '@/types/playground'
 
 /**
  * useAIChatStreamHandler is responsible for making API calls and handling the stream response.
@@ -67,18 +68,17 @@ const useAIChatStreamHandler = () => {
         created_at: Math.floor(Date.now() / 1000)
       })
 
-      // Add an empty agent message placeholder
+      // Add an empty agent message placeholder with tool_calls array
       addMessage({
         role: 'agent',
         content: '',
-        // tool_calls: [], // not used at the moment
+        tool_calls: [],
         streamingError: false,
         created_at: Math.floor(Date.now() / 1000) + 1
       })
 
-      // Session-related variables commented out until needed:
-      // let lastContent = ''
-      // let newSessionId = sessionId
+      // Define variable to hold previous content for tool call diffing
+      let lastContent = ''
 
       try {
         const endpointUrl = constructEndpointUrl(selectedEndpoint)
@@ -97,7 +97,7 @@ const useAIChatStreamHandler = () => {
           requestBody: formData,
           onChunk: (chunk: RunResponse) => {
             if (chunk.event === RunEvent.RunResponse) {
-              // Update the last (agent) message with new content from the stream chunk
+              // Update the last (agent) message with new content and tool calls from the stream chunk
               setMessages((prevMessages) => {
                 const newMessages = [...prevMessages]
                 const lastMessage = newMessages[newMessages.length - 1]
@@ -106,15 +106,48 @@ const useAIChatStreamHandler = () => {
                   lastMessage.role === 'agent' &&
                   typeof chunk.content === 'string'
                 ) {
-                  // Simply append the new content
-                  lastMessage.content += chunk.content
+                  // Append only the new part of the content
+                  const uniqueContent = chunk.content.replace(lastContent, '')
+                  lastMessage.content += uniqueContent
+                  lastContent = chunk.content
+
+                  // Process tool calls from chunk (removing reasoning messages)
+                  const toolCalls: ToolCall[] = [
+                    ...(chunk.tools ?? [])
+                  ]
+                  if (toolCalls.length > 0) {
+                    lastMessage.tool_calls = toolCalls
+                  }
+
+                  console.log('tool calls', toolCalls)
                   lastMessage.created_at =
                     chunk.created_at ?? lastMessage.created_at
+                //   if (chunk.extra_data?.reasoning_steps) {
+                //     lastMessage.extra_data = {
+                //       ...(lastMessage.extra_data || {}),
+                //       reasoning_steps: chunk.extra_data.reasoning_steps
+                //     }
+                //   }
+                //   if (chunk.extra_data?.references) {
+                //     lastMessage.extra_data = {
+                //       ...(lastMessage.extra_data || {}),
+                //       references: chunk.extra_data.references
+                //     }
+                //   }
+                //   if (chunk.images) {
+                //     lastMessage.images = chunk.images
+                //   }
+                //   if (chunk.videos) {
+                //     lastMessage.videos = chunk.videos
+                //   }
+                //   if (chunk.audio) {
+                //     lastMessage.audio = chunk.audio
+                //   }
                 }
                 return newMessages
               })
             } else if (chunk.event === RunEvent.RunCompleted) {
-              // Final update (if needed) on completion of the stream
+              // Final update on completion of the stream:
               setMessages((prevMessages) => {
                 const newMessages = prevMessages.map((message, index) => {
                   if (
@@ -133,7 +166,23 @@ const useAIChatStreamHandler = () => {
                     }
                     return {
                       ...message,
-                      content: updatedContent
+                      content: updatedContent,
+                      tool_calls:
+                        chunk.tools && chunk.tools.length > 0
+                          ? [...chunk.tools]
+                          : message.tool_calls,
+                    //   images: chunk.images ?? message.images,
+                    //   videos: chunk.videos ?? message.videos,
+                      created_at: chunk.created_at ?? message.created_at,
+                    //   extra_data: {
+                    //     ...message.extra_data,
+                    //     reasoning_steps:
+                    //       chunk.extra_data?.reasoning_steps ??
+                    //       message.extra_data?.reasoning_steps,
+                    //     references:
+                    //       chunk.extra_data?.references ??
+                    //       message.extra_data?.references
+                    //   }
                     }
                   }
                   return message
@@ -141,11 +190,6 @@ const useAIChatStreamHandler = () => {
                 return newMessages
               })
             }
-            // Session update logic commented out for now:
-            // if (chunk.session_id && chunk.session_id !== newSessionId) {
-            //   newSessionId = chunk.session_id
-            //   setSessionId(chunk.session_id)
-            // }
           },
           onError: (error) => {
             setMessages((prevMessages) => {
@@ -168,17 +212,6 @@ const useAIChatStreamHandler = () => {
           onComplete: () => {
             // Reset the global streaming error flag on successful completion
             setStreamingError(false)
-            // if (newSessionId && newSessionId !== sessionId) {
-            //   const placeHolderSessionData = {
-            //     session_id: newSessionId,
-            //     title: formData.get('message') as string,
-            //     created_at: Math.floor(Date.now() / 1000)
-            //   }
-            //   setHistoryData((prevHistoryData) => [
-            //     placeHolderSessionData,
-            //     ...prevHistoryData
-            //   ])
-            // }
           }
         })
       } catch {
@@ -191,12 +224,10 @@ const useAIChatStreamHandler = () => {
       // setIsStreaming, // not used for now
       setMessages,
       addMessage,
-      // sessionId, // removed until needed
       selectedEndpoint,
       streamResponse,
       selectedAgent,
       setStreamingError
-      // userId, isMonitoring, setSessionId, setStreamingError, setHistoryData are removed/commented
     ]
   )
 
