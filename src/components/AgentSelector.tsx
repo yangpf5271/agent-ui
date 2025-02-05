@@ -39,10 +39,10 @@ export function AgentSelector() {
         setSelectedAgent(value === selectedAgent ? "" : value)
       }
     >
-      <SelectTrigger className="w-60">
+      <SelectTrigger className="w-60 border-border/50 focus:border-border/100">
         <SelectValue placeholder="Select agent..." />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="border-border/50 focus:border-border/100">
         {agents.map((agent, index) => (
           <SelectItem key={`${agent.value}-${index}`} value={agent.value}>
             {agent.label}
