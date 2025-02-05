@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import useAIChatStreamHandler from "@/hooks/playground/useAIStreamHandler";
 import { useQueryState } from "nuqs";
+import { SendIcon } from "lucide-react";
 // import { useAgentsQuery } from '@/hooks/playground/useAgentsQuery'
 const ChatInput = () => {
   const { chatInputRef } = usePlaygroundStore();
@@ -73,10 +74,11 @@ const ChatInput = () => {
       <Button
         onClick={handleSubmit}
         // disabled={isDisabled}
-        icon="send"
         variant="link"
-        className="absolute bottom-[-6px] right-1.5 -translate-y-1/2 text-secondary"
-      />
+        className="absolute bottom-[-12px] right-1.5 -translate-y-1/2 text-secondary"
+      >
+        <SendIcon className="w-4 h-4" />
+      </Button>
     </div>
   );
 };
