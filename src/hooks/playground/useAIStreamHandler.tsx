@@ -96,6 +96,7 @@ const useAIChatStreamHandler = () => {
           apiUrl: playgroundRunUrl,
           requestBody: formData,
           onChunk: (chunk: RunResponse) => {
+            console.log('chunk', chunk)
             if (chunk.event === RunEvent.RunResponse) {
               // Update the last (agent) message with new content and tool calls from the stream chunk
               setMessages((prevMessages) => {
@@ -117,6 +118,12 @@ const useAIChatStreamHandler = () => {
                   ]
                   if (toolCalls.length > 0) {
                     lastMessage.tool_calls = toolCalls
+                  }
+                  if (chunk.extra_data?.reasoning_steps) {
+                    lastMessage.extra_data = {
+                      ...lastMessage.extra_data,
+                      reasoning_steps: chunk.extra_data.reasoning_steps
+                    }
                   }
 
                   console.log('tool calls', toolCalls)
@@ -174,15 +181,15 @@ const useAIChatStreamHandler = () => {
                     //   images: chunk.images ?? message.images,
                     //   videos: chunk.videos ?? message.videos,
                       created_at: chunk.created_at ?? message.created_at,
-                    //   extra_data: {
+                      extra_data: {
                     //     ...message.extra_data,
-                    //     reasoning_steps:
-                    //       chunk.extra_data?.reasoning_steps ??
-                    //       message.extra_data?.reasoning_steps,
+                        reasoning_steps:
+                          chunk.extra_data?.reasoning_steps ??
+                          message.extra_data?.reasoning_steps,
                     //     references:
                     //       chunk.extra_data?.references ??
                     //       message.extra_data?.references
-                    //   }
+                      }
                     }
                   }
                   return message

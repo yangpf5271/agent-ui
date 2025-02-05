@@ -8,9 +8,11 @@ import type { PlaygroundChatMessage } from "@/types/playground";
 
 import { AgentMessage, UserMessage } from "./Messages";
 import Tooltip from "@/components/common/Tooltip";
-import { HammerIcon } from "lucide-react";
+import { HammerIcon, BrainCircuitIcon } from "lucide-react";
 import { memo } from "react";
-import { ToolCallProps } from "@/types/playground";
+import { ToolCallProps, ReasoningStepProps, ReasoningProps } from "@/types/playground";
+import React, { type FC } from 'react'
+
 // import ChatBlankState from '../../../BlankStates/ChatBlankState'
 // import Tooltip from '@/components/common/Tooltip'
 // import Paragraph from '@/components/ui/typography/Paragraph'
@@ -34,6 +36,26 @@ const AgentMessageWrapper = ({
 
   return (
     <div className="flex flex-col gap-y-9">
+      {message.extra_data?.reasoning_steps &&
+        message.extra_data.reasoning_steps.length > 0 && (
+          <div className="flex items-start gap-4">
+            <Tooltip
+              delayDuration={0}
+              content={
+                <p className="text-accent">
+                  Reasoning
+                </p>
+              }
+              side="top"
+            >      
+              <BrainCircuitIcon className="h-5 w-5" />
+            </Tooltip>
+            <div className="flex flex-col gap-3">
+              <p className="text-xs uppercase">Reasoning</p>
+              <Reasonings reasoning={message.extra_data.reasoning_steps} />
+            </div>
+          </div>
+        )}
       {message.tool_calls && message.tool_calls.length > 0 && (
         <div className="flex items-start gap-4">
           <Tooltip
@@ -69,6 +91,25 @@ const AgentMessageWrapper = ({
     </div>
   );
 };
+const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
+  <div className="flex items-center gap-2 text-secondary">
+    <div className="flex h-[20px] items-center rounded-sm bg-gray-800 p-2">
+      <p className="text-xs">STEP {index + 1}</p>
+    </div>
+    <p className="text-xs">{stepTitle}</p>
+  </div>
+)
+const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
+  <div className="flex flex-col items-start justify-center gap-2">
+    {reasoning.map((title, index) => (
+      <Reasoning
+        key={`${title.title}-${title.action}`}
+        stepTitle={title.title}
+        index={index}
+      />
+    ))}
+  </div>
+)
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
   <div className="cursor-pointer rounded-md bg-gray-800 px-2  py-1.5 text-xs hover:bg-gray-700">

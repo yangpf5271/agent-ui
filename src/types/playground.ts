@@ -9,8 +9,27 @@ export interface ToolCall {
       time: number
     }
     created_at: number
+  } 
+
+  export interface ReasoningSteps {
+    title: string
+    action?: string
+    result: string
+    reasoning: string
+    confidence?: number
+    next_action?: string
+  }
+  export interface ReasoningStepProps {
+    index: number
+    stepTitle: string
+  }
+  export interface ReasoningProps {
+    reasoning: ReasoningSteps[]
   }
   
+ 
+  
+
   export type ToolCallProps = {
     tools: ToolCall
   }
@@ -71,14 +90,42 @@ interface ModelMessage {
     session_id?: string
     created_at: number
     tools?: ToolCall[]
+    extra_data?: PlaygroundAgentExtraData
+  }
+
+  export interface AgentExtraData {
+    reasoning_steps?: ReasoningSteps[]
+    reasoning_messages?: ReasoningMessage[]
+    // references?: ReferencesData[]
   }
   
+
+  export interface PlaygroundAgentExtraData extends AgentExtraData {
+    reasoning_messages?: ReasoningMessage[]
+  }
+
+  export interface ReasoningMessage {
+    role: 'user' | 'tool' | 'system' | 'assistant'
+    content: string | null
+    tool_call_id?: string
+    tool_name?: string
+    tool_args?: Record<string, string>
+    tool_call_error?: boolean
+    metrics?: {
+      time: number
+    }
+    created_at?: number
+  }
   export interface PlaygroundChatMessage {
     role: 'user' | 'agent' | 'system' | 'tool'
     content: string
     streamingError?: boolean
     created_at: number
     tool_calls?: ToolCall[]
+    extra_data?: {
+        reasoning_steps?: ReasoningSteps[]
+        reasoning_messages?: ReasoningMessage[]
+    }
   }
 
   export interface HistoryEntry {
