@@ -13,9 +13,9 @@ export default function Sidebar() {
         <AgnoIcon />
         <span className="text-white text-xs font-medium uppercase font-geist-mono">Agno Chat</span>
       </div>
-      <Button onClick={clearChat} className="bg-brand hover:bg-brand/80">
+      <Button onClick={clearChat} className="bg-secondary text-primary hover:bg-secondary/80 rounded-xl text-xs">
         <PlusIcon />
-        <span className="ml-2">New Chat</span>
+        <span className="ml-2 uppercase">New Chat</span>
       </Button>
       <AgentSelector />
     </aside>
