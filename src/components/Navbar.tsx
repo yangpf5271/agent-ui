@@ -9,7 +9,7 @@ export default function Navbar() {
   const { clearChat } = useChatActions();
 
   return (
-    <header className="p-4 flex items-center gap-4">
+    <header className="sticky  z-10 p-4 flex items-center gap-4 bg-primary">
       <Button onClick={clearChat} className="bg-brand hover:bg-brand/80">
         <PlusIcon />
         <span className="ml-2">New Chat</span>
