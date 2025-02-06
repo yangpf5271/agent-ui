@@ -10,8 +10,12 @@ import { AgentMessage, UserMessage } from "./Messages";
 import Tooltip from "@/components/common/Tooltip";
 import { HammerIcon, BrainCircuitIcon } from "lucide-react";
 import { memo } from "react";
-import { ToolCallProps, ReasoningStepProps, ReasoningProps } from "@/types/playground";
-import React, { type FC } from 'react'
+import {
+  ToolCallProps,
+  ReasoningStepProps,
+  ReasoningProps,
+} from "@/types/playground";
+import React, { type FC } from "react";
 
 // import ChatBlankState from '../../../BlankStates/ChatBlankState'
 // import Tooltip from '@/components/common/Tooltip'
@@ -41,13 +45,9 @@ const AgentMessageWrapper = ({
           <div className="flex items-start gap-4">
             <Tooltip
               delayDuration={0}
-              content={
-                <p className="text-accent">
-                  Reasoning
-                </p>
-              }
+              content={<p className="text-accent">Reasoning</p>}
               side="top"
-            >      
+            >
               <BrainCircuitIcon className="h-5 w-5" />
             </Tooltip>
             <div className="flex flex-col gap-3">
@@ -60,11 +60,7 @@ const AgentMessageWrapper = ({
         <div className="flex items-start gap-4">
           <Tooltip
             delayDuration={0}
-            content={
-              <p className="text-accent">
-                Tool Calls
-              </p>
-            }
+            content={<p className="text-accent">Tool Calls</p>}
             side="top"
             className="rounded-sm bg-primary p-1"
           >
@@ -98,7 +94,7 @@ const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
     </div>
     <p className="text-xs">{stepTitle}</p>
   </div>
-)
+);
 const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   <div className="flex flex-col items-start justify-center gap-2">
     {reasoning.map((title, index) => (
@@ -109,21 +105,21 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
       />
     ))}
   </div>
-)
+);
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
   <div className="cursor-pointer rounded-md bg-gray-800 px-2  py-1.5 text-xs hover:bg-gray-700">
-      <div className="flex items-center justify-between gap-x-1">
-        <p className="uppercase">{tools.tool_name}</p>
-      </div>
+    <div className="flex items-center justify-between gap-x-1">
+      <p className="uppercase">{tools.tool_name}</p>
+    </div>
   </div>
-))
+));
 
 const MessageList = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
     return (
-      <div className="flex flex-col text-center items-center text-md">
-        <div className="max-w-md flex gap-y-6 flex-col">
+      <div className="flex flex-col text-center items-center text-md font-inter">
+        <div className="max-w-lg flex gap-y-6 flex-col">
           <p>
             This is an <span className="underline">open-source</span> an Agno
             Agent Chat, built with Next.js, Shadcn, and Tailwind CSS.
