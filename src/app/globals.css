@@ -8,6 +8,6 @@ body {
 
 @layer base {
   body {
-    @apply bg-primary text-secondary;
+    @apply bg-[#111113] text-secondary;
   }
 }

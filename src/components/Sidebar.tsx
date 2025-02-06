@@ -5,16 +5,16 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { AgentSelector } from "@/components/AgentSelector";
 import useChatActions from "@/hooks/playground/useChatActions";
 
-export default function Navbar() {
+export default function Sidebar() {
   const { clearChat } = useChatActions();
 
   return (
-    <header className="sticky  z-10 p-4 flex items-center gap-4 bg-primary">
+    <aside className="sticky top-0 z-10 h-screen w-64 bg-[#18181B] p-4 flex flex-col gap-4">
       <Button onClick={clearChat} className="bg-brand hover:bg-brand/80">
         <PlusIcon />
         <span className="ml-2">New Chat</span>
       </Button>
       <AgentSelector />
-    </header>
+    </aside>
   );
 } 
