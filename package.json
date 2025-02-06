@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write .",
-    "validate": "npm run format && npm run lint"
+    "lint:fix": "next lint --fix",
+    "format": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
+    "typecheck": "tsc --noEmit",
+    "validate": "pnpm run lint && pnpm run format && pnpm run typecheck"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.5",
