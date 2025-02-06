@@ -16,7 +16,7 @@ const ChatInput = () => {
 
   // const { data: agents = [] } = useAgentsQuery(selectedEndpoint)
   const { handleStreamResponse } = useAIChatStreamHandler();
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent)
+  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
   const setStreamingError = usePlaygroundStore(
     (state) => state.setStreamingError
   );
@@ -49,12 +49,12 @@ const ChatInput = () => {
     }
   };
 
-  const isDisabled = selectedAgent === ""
+  const isDisabled = selectedAgent === "";
 
   return (
-    <div className="relative mx-auto flex w-full max-w-2xl justify-center gap-x-2 mb-1">
+    <div className="relative mx-auto flex w-full max-w-2xl justify-center gap-x-2 mb-1 font-inter">
       <PlaygroundTextArea
-        placeholder={"Type something..."}
+        placeholder={"Ask anything"}
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
         onKeyDown={(e) => {
