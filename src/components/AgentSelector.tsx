@@ -41,7 +41,7 @@ export function AgentSelector() {
         setSelectedAgent(value === selectedAgent ? "" : value)
       }
     >
-      <SelectTrigger className="w-full border-none font-medium bg-[#27272a] rounded-lg uppercase">
+      <SelectTrigger className="w-full border-none text-xs font-medium bg-[#27272a] rounded-lg uppercase">
         <SelectValue placeholder="Select Agent" />
       </SelectTrigger>
       <SelectContent className="border-none bg-[#27272a] rounded-lg">
