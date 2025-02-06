@@ -9,10 +9,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: "#ff4017",
-        primary: "#171717",
+        brand: "#FF4017",
+        primary: "#111113",
         secondary: "#f5f5f5",
         border: "#7d7d7d",
+      },
+      fontFamily: {
+        geist: ["Geist Mono", "monospace"],
       },
     },
   },
