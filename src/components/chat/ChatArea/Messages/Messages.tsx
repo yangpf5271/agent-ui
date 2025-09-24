@@ -144,9 +144,12 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
     ))}
   </div>
 )
+const renderToolDialog = (tools: ToolCallProps) => {
+  console.error(tools)
+}
 
 const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs">
+  <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs" onClick={() => { renderToolDialog(tools) }}>
     <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
   </div>
 ))

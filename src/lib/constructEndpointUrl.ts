@@ -6,6 +6,9 @@ export const constructEndpointUrl = (
   if (value.startsWith('http://') || value.startsWith('https://')) {
     return decodeURIComponent(value)
   }
+  if (value.startsWith('/')) {
+    return window.location.origin + value
+  }
 
   // Check if the endpoint is localhost or an IP address
   if (
