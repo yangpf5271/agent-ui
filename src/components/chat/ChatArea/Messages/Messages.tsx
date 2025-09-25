@@ -2,18 +2,26 @@ import type { ChatMessage } from '@/types/os'
 
 import { AgentMessage, UserMessage } from './MessageItem'
 import Tooltip from '@/components/ui/tooltip'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import {
   ToolCallProps,
   ReasoningStepProps,
   ReasoningProps,
   ReferenceData,
-  Reference
+  Reference,
+  ToolCall
 } from '@/types/os'
 import React, { type FC } from 'react'
 
 import Icon from '@/components/ui/icon'
 import ChatBlankState from './ChatBlankState'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription
+} from '@/components/ui/dialog'
 
 interface MessageListProps {
   messages: ChatMessage[]
@@ -59,7 +67,7 @@ const References: FC<ReferenceProps> = ({ references }) => (
   </div>
 )
 
-const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
+const AgentMessageWrapper = ({ message, onShowToolDialog }: MessageWrapperProps & { onShowToolDialog: (toolCall: ToolCall) => void }) => {
   return (
     <div className="flex flex-col gap-y-9">
       {message.extra_data?.reasoning_steps &&
@@ -116,6 +124,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
                   `${toolCall.tool_name}-${toolCall.created_at}-${index}`
                 }
                 tools={toolCall}
+                onShowDialog={onShowToolDialog}
               />
             ))}
           </div>
@@ -144,17 +153,103 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
     ))}
   </div>
 )
-const renderToolDialog = (tools: ToolCallProps) => {
-  console.error(tools)
+// 工具调用详情弹框组件
+interface ToolDialogProps {
+  isOpen: boolean
+  onClose: () => void
+  toolCall: ToolCall
 }
 
-const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs" onClick={() => { renderToolDialog(tools) }}>
+const ToolDialog: FC<ToolDialogProps> = ({ isOpen, onClose, toolCall }) => (
+  <Dialog open={isOpen} onOpenChange={onClose}>
+    <DialogContent className="font-geist max-w-[600px]">
+      <DialogHeader>
+        <DialogTitle className="flex items-center gap-2">
+          <Icon type="hammer" size="sm" />
+          工具调用详情
+        </DialogTitle>
+        <DialogDescription>
+          查看工具调用的详细信息
+        </DialogDescription>
+      </DialogHeader>
+
+      <div className="space-y-4">
+        {/* 工具名称 */}
+        <div>
+          <h4 className="text-sm font-medium text-primary mb-2">工具名称</h4>
+          <div className="rounded-md bg-background-secondary p-3">
+            <code className="text-sm font-mono text-accent">{toolCall.tool_name}</code>
+          </div>
+        </div>
+
+        {/* 工具参数 */}
+        <div>
+          <h4 className="text-sm font-medium text-primary mb-2">工具参数</h4>
+          <div className="rounded-md bg-background-secondary p-3 max-h-[200px] overflow-auto">
+            <pre className="text-sm font-mono text-primary whitespace-pre-wrap">
+              {JSON.stringify(toolCall.tool_args, null, 2)}
+            </pre>
+          </div>
+        </div>
+
+        {/* 执行结果 */}
+        {toolCall.content && (
+          <div>
+            <h4 className="text-sm font-medium text-primary mb-2">执行结果</h4>
+            <div className="rounded-md bg-background-secondary p-3 max-h-[300px] overflow-auto">
+              <p className="text-sm text-primary whitespace-pre-wrap">
+                {toolCall.content}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 执行状态和指标 */}
+        <div className="flex justify-between items-center text-sm text-secondary">
+          <div className="flex items-center gap-2">
+            <span>状态:</span>
+            <span className={`px-2 py-1 rounded text-xs ${
+              toolCall.tool_call_error
+                ? 'bg-red-100 text-red-800'
+                : 'bg-green-100 text-green-800'
+            }`}>
+              {toolCall.tool_call_error ? '执行失败' : '执行成功'}
+            </span>
+          </div>
+          {toolCall.metrics?.time && (
+            <div>
+              执行时间: {toolCall.metrics.time}ms
+            </div>
+          )}
+        </div>
+      </div>
+    </DialogContent>
+  </Dialog>
+)
+
+const ToolComponent = memo(({ tools, onShowDialog }: ToolCallProps & { onShowDialog: (toolCall: ToolCall) => void }) => (
+  <div
+    className="cursor-pointer rounded-full bg-accent px-2 py-1.5 text-xs hover:bg-accent/80 transition-colors"
+    onClick={() => onShowDialog(tools)}
+  >
     <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
   </div>
 ))
 ToolComponent.displayName = 'ToolComponent'
 const Messages = ({ messages }: MessageListProps) => {
+  const [selectedToolCall, setSelectedToolCall] = useState<ToolCall | null>(null)
+  const [isToolDialogOpen, setIsToolDialogOpen] = useState(false)
+
+  const handleShowToolDialog = (toolCall: ToolCall) => {
+    setSelectedToolCall(toolCall)
+    setIsToolDialogOpen(true)
+  }
+
+  const handleCloseToolDialog = () => {
+    setIsToolDialogOpen(false)
+    setSelectedToolCall(null)
+  }
+
   if (messages.length === 0) {
     return <ChatBlankState />
   }
@@ -171,11 +266,21 @@ const Messages = ({ messages }: MessageListProps) => {
               key={key}
               message={message}
               isLastMessage={isLastMessage}
+              onShowToolDialog={handleShowToolDialog}
             />
           )
         }
         return <UserMessage key={key} message={message} />
       })}
+
+      {/* 工具调用详情弹框 */}
+      {selectedToolCall && (
+        <ToolDialog
+          isOpen={isToolDialogOpen}
+          onClose={handleCloseToolDialog}
+          toolCall={selectedToolCall}
+        />
+      )}
     </>
   )
 }
